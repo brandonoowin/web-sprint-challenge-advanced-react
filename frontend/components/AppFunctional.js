@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 // Suggested initial states
 const initialMessage = ''
@@ -9,19 +9,33 @@ const initialIndex = 4 // the index the "B" is at
 export default function AppFunctional(props) {
   // THE FOLLOWING HELPERS ARE JUST RECOMMENDATIONS.
   // You can delete them and build your own logic from scratch.
+  const gridArray = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 
-  function getXY() {
+  const [index, setIndex] = useState(initialIndex);
+  const [steps, setSteps] = useState(initialSteps);
+  const [email, setEmail] = useState(initialEmail);
+
+  function getXY(index) {
+    const x = index % 3;
+    const y = Math.floor(index /3);
+    return { x, y }
     // It it not necessary to have a state to track the coordinates.
     // It's enough to know what index the "B" is at, to be able to calculate them.
   }
 
   function getXYMessage() {
+    const { x, y } = getXY(index);
+    const message = `Coordinates (${x}, ${y})`;
+    return message;
     // It it not necessary to have a state to track the "Coordinates (2, 2)" message for the user.
     // You can use the `getXY` helper above to obtain the coordinates, and then `getXYMessage`
     // returns the fully constructed string.
   }
 
   function reset() {
+    setIndex(initialIndex);
+    setSteps(initialSteps);
+    setEmail(initialEmail);
     // Use this helper to reset all states to their initial values.
   }
 
@@ -52,7 +66,7 @@ export default function AppFunctional(props) {
       </div>
       <div id="grid">
         {
-          [0, 1, 2, 3, 4, 5, 6, 7, 8].map(idx => (
+          gridArray.map(idx => (
             <div key={idx} className={`square${idx === 4 ? ' active' : ''}`}>
               {idx === 4 ? 'B' : null}
             </div>
