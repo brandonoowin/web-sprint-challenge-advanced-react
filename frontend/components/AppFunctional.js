@@ -74,7 +74,7 @@ export default function AppFunctional(props) {
     setIndex(initialIndex);
     setSteps(initialSteps);
     setEmail(initialEmail);
-    setMessage('');
+    setMessage(initialMessage);
     // Use this helper to reset all states to their initial values.
   }
 
@@ -109,6 +109,7 @@ export default function AppFunctional(props) {
     if (nextIndex !== index) {
       setIndex(nextIndex);
       setSteps(steps + 1);
+      setMessage('');
     } else {
       setMessage(`You can't go ${direction}`);
     }
@@ -137,6 +138,7 @@ export default function AppFunctional(props) {
     axios.post('http://localhost:9000/api/result', payload)
       .then(response => {
         setMessage(response.data.message);
+        setEmail(initialEmail);
       })
       .catch(error => {
         setMessage(`Error: ${error.response.data.message}`);
@@ -149,13 +151,13 @@ export default function AppFunctional(props) {
     <div id="wrapper" className={props.className}>
       <div className="info">
         <h3 id="coordinates">{getXYMessage(index)}</h3>
-        <h3 id="steps">You moved {steps} times</h3>
+        <h3 id="steps">{`${steps === 1 ? `You moved ${steps} time` : `You moved ${steps} times`}`}</h3> 
       </div>
       <div id="grid">
         {
           gridArray.map(idx => (
-            <div key={idx} className={`square${idx === 4 ? ' active' : ''}`}>
-              {idx === 4 ? 'B' : null}
+            <div key={idx} className={`square${idx === index ? ' active' : ''}`}>
+              {idx === index ? 'B' : null}
             </div>
           ))
         }
